@@ -2,12 +2,30 @@
  terraform {
    required_providers {
      aws = {
-      #source  = "terraform-provider-aws"
-       # version = "~> 5.0"
+      source  = "hashicorp/aws"
+      version = "5.38.0"
      }
    }
- }
 
+    required_version = "~> 1.7.0"
+
+  }
+
+  provider "aws" {
+     region             = "us-east-1"
+     profile            = "Pavan-Terraform-user"
+  }
+
+  # store the terraform state file in s3
+terraform {
+  backend "s3" {
+    bucket    = "pavan-terraform-state"
+    key       = "Dev-app.tfstate"
+    region    = "us-east-1"
+    profile   = "Pavan-Terraform-user"
+    #dynamodb_table = "terraform-state-lock"
+  }
+}
 # create vpc
 module "vpc" {
     source                                    = "../modules/vpc"
